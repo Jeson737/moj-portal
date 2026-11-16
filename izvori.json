@@ -1,10 +1,8 @@
-{
-  "Vesti": [
-    {
+  {
       "naziv": "021.rs",
       "tip": "html",
-      "url": "https://021.rs/najnovije/3",
-      "kartica_selektor": "article",
+      "url": "https://www.021.rs/najnovije/3",
+      "kartica_selektor": "div:has(> h2 a), div:has(> h3 a)",
       "naslov_selektor": "h2 a, h3 a",
       "slika_selektor": "img"
     },
