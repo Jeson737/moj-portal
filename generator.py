@@ -66,8 +66,10 @@ def uzmi_html(cfg):
     stavke = []
     try:
         r = requests.get(cfg["url"], impersonate="chrome", timeout=20)
+        print(f"[{cfg['naziv']}] HTML Status: {r.status_code}")
         soup = BeautifulSoup(r.text, "html.parser")
         kartice = soup.select(cfg["kartica_selektor"])[:6]
+        print(f"[{cfg['naziv']}] Pronadjeno kartica: {len(kartice)}")
         for k in kartice:
             a_tag = k.select_one(cfg["naslov_selektor"])
             if not a_tag:
@@ -80,6 +82,8 @@ def uzmi_html(cfg):
                 src = img_tag.get("src") or img_tag.get("data-src")
                 if src:
                     slika = urljoin(cfg["url"], src)
+            if slika == PODRAZUMEVANA_SLIKA and link != "#":
+                slika = uzmi_og_sliku(link)
             stavke.append({
                 "naslov": naslov,
                 "link": link,
