@@ -26,5 +26,12 @@
       "url": "https://www.bug.hr/rss"
     }
   ]
+  "Privreda": [
+    {
+      "naziv": "eKapija",
+      "tip": "html",
+      "url": "https://www.ekapija.com/najnovije-vesti?site=rs"
+    }
+  ]
 }
  
