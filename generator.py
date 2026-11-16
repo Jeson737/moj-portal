@@ -69,13 +69,21 @@ def uzmi_html(cfg):
         print(f"[{cfg['naziv']}] HTML Status: {r.status_code}")
         soup = BeautifulSoup(r.text, "html.parser")
         vidjeni = set()
-        for h in soup.select("h2, h3"):
-            a_tag = h.find("a") or h.find_parent("a")
+        
+        kandidati = soup.select("h2, h3")
+        if not kandidati or "ekapija" in cfg["url"]:
+            kandidati = soup.select("a[href*='/news/'], a[href*='/vest/'], a[href*='/vesti/']")
+
+        for el in kandidati:
+            if el.name == "a":
+                a_tag = el
+            else:
+                a_tag = el.find("a") or el.find_parent("a")
             if not a_tag or not a_tag.get("href"):
                 continue
-            naslov = h.get_text(strip=True)
+            naslov = a_tag.get_text(strip=True)
             link = urljoin(cfg["url"], a_tag["href"])
-            if len(naslov) < 15 or link in vidjeni:
+            if len(naslov) < 20 or link in vidjeni:
                 continue
             vidjeni.add(link)
             slika = uzmi_og_sliku(link)
@@ -91,6 +99,7 @@ def uzmi_html(cfg):
     except Exception as e:
         print(f"[{cfg['naziv']}] GRESKA: {e}")
     return stavke
+
 
 
 def generisi():
