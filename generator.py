@@ -68,31 +68,30 @@ def uzmi_html(cfg):
         r = requests.get(cfg["url"], impersonate="chrome", timeout=20)
         print(f"[{cfg['naziv']}] HTML Status: {r.status_code}")
         soup = BeautifulSoup(r.text, "html.parser")
-        kartice = soup.select(cfg["kartica_selektor"])[:6]
-        print(f"[{cfg['naziv']}] Pronadjeno kartica: {len(kartice)}")
-        for k in kartice:
-            a_tag = k.select_one(cfg["naslov_selektor"])
-            if not a_tag:
+        vidjeni = set()
+        for h in soup.select("h2, h3"):
+            a_tag = h.find("a") or h.find_parent("a")
+            if not a_tag or not a_tag.get("href"):
                 continue
-            naslov = a_tag.get_text(strip=True)
-            link = urljoin(cfg["url"], a_tag.get("href", "#"))
-            img_tag = k.select_one(cfg.get("slika_selektor", "img"))
-            slika = PODRAZUMEVANA_SLIKA
-            if img_tag:
-                src = img_tag.get("src") or img_tag.get("data-src")
-                if src:
-                    slika = urljoin(cfg["url"], src)
-            if slika == PODRAZUMEVANA_SLIKA and link != "#":
-                slika = uzmi_og_sliku(link)
+            naslov = h.get_text(strip=True)
+            link = urljoin(cfg["url"], a_tag["href"])
+            if len(naslov) < 15 or link in vidjeni:
+                continue
+            vidjeni.add(link)
+            slika = uzmi_og_sliku(link)
             stavke.append({
                 "naslov": naslov,
                 "link": link,
                 "slika": slika,
                 "izvor": cfg["naziv"]
             })
+            if len(stavke) >= 6:
+                break
+        print(f"[{cfg['naziv']}] Ucitano vesti: {len(stavke)}")
     except Exception as e:
         print(f"[{cfg['naziv']}] GRESKA: {e}")
     return stavke
+
 
 def generisi():
     with open("izvori.json", "r", encoding="utf-8") as f:
