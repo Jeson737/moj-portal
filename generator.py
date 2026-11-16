@@ -6,29 +6,36 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib.parse import urljoin
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
 PODRAZUMEVANA_SLIKA = "https://placeholder.com"
 
 def uzmi_rss(url, izvor_naziv):
     stavke = []
-    feed = feedparser.parse(url)
-    for entry in feed.entries[:8]:
-        slika = PODRAZUMEVANA_SLIKA
-        if "media_content" in entry and entry.media_content:
-            slika = entry.media_content[0].get("url", slika)
-        elif "media_thumbnail" in entry and entry.media_thumbnail:
-            slika = entry.media_thumbnail[0].get("url", slika)
-        elif "summary" in entry:
-            soup = BeautifulSoup(entry.summary, "html.parser")
-            img = soup.find("img")
-            if img and img.get("src"):
-                slika = img["src"]
-        stavke.append({
-            "naslov": entry.get("title", "Bez naslova"),
-            "link": entry.get("link", "#"),
-            "slika": slika,
-            "izvor": izvor_naziv
-        })
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        feed = feedparser.parse(r.content)
+        print(f"{izvor_naziv}: pronadjeno {len(feed.entries)} vesti")
+        for entry in feed.entries[:8]:
+            slika = PODRAZUMEVANA_SLIKA
+            if "media_content" in entry and len(entry.media_content) > 0:
+                slika = entry.media_content.get("url", slika)
+            elif "media_thumbnail" in entry and len(entry.media_thumbnail) > 0:
+                slika = entry.media_thumbnail.get("url", slika)
+            elif "enclosures" in entry and len(entry.enclosures) > 0:
+                slika = entry.enclosures.get("href", slika)
+            elif "summary" in entry:
+                soup = BeautifulSoup(entry.summary, "html.parser")
+                img = soup.find("img")
+                if img and img.get("src"):
+                    slika = img["src"]
+            stavke.append({
+                "naslov": entry.get("title", "Bez naslova"),
+                "link": entry.get("link", "#"),
+                "slika": slika,
+                "izvor": izvor_naziv
+            })
+    except Exception as e:
+        print(f"Greska za {izvor_naziv}: {e}")
     return stavke
 
 def uzmi_html(cfg):
