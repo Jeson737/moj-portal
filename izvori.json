@@ -3,7 +3,7 @@
     {
       "naziv": "021.rs",
       "tip": "html",
-      "url": "https://021.rs/najnovije",
+      "url": "https://021.rs/najnovije/3",
       "kartica_selektor": "article",
       "naslov_selektor": "h2 a, h3 a",
       "slika_selektor": "img"
