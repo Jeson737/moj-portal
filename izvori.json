@@ -1,19 +1,26 @@
 {
-  "Tehnologija": [
+  "Vesti": [
     {
-      "naziv": "Hacker News",
+      "naziv": "021.rs",
       "tip": "rss",
-      "url": "https://hnrss.org"
+      "url": "https://021.rs"
+    },
+    {
+      "naziv": "Južne vesti",
+      "tip": "rss",
+      "url": "https://juznevesti.com"
     }
   ],
-  "Vesti i Oglasi": [
+  "Tehnologija": [
     {
-      "naziv": "Primer sajta bez RSS-a",
-      "tip": "html",
-      "url": "https://primer-sajta.rs",
-      "kartica_selektor": "article.vest",
-      "naslov_selektor": "h2 a",
-      "slika_selektor": "img"
+      "naziv": "Benchmark",
+      "tip": "rss",
+      "url": "https://benchmark.rs"
+    },
+    {
+      "naziv": "Bug.hr",
+      "tip": "rss",
+      "url": "https://www.bug.hr/rss"
     }
   ]
 }
