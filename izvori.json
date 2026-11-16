@@ -1,37 +1,28 @@
- {
+{
   "Vesti": [
     {
       "naziv": "021.rs",
-      "tip": "html",
-      "url": "https://www.021.rs/najnovije/3",
-      "kartica_selektor": "div:has(> h2 a), div:has(> h3 a)",
-      "naslov_selektor": "h2 a, h3 a",
-      "slika_selektor": "img"
+      "url": "https://021.rs"
     },
     {
       "naziv": "Južne vesti",
-      "tip": "rss",
-      "url": "https://www.juznevesti.com/feed/"
+      "url": "https://juznevesti.com"
     }
   ],
   "Tehnologija": [
     {
       "naziv": "Benchmark",
-      "tip": "rss",
-      "url": "https://benchmark.rs/feed/"
+      "url": "https://benchmark.rs"
     },
     {
       "naziv": "Bug.hr",
-      "tip": "rss",
-      "url": "https://www.bug.hr/rss"
+      "url": "https://bug.hr"
     }
   ],
   "Privreda": [
     {
       "naziv": "eKapija",
-      "tip": "html",
-      "url": "https://www.ekapija.com/"
+      "url": "https://ekapija.com"
     }
   ]
 }
- 
