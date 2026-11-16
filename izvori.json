@@ -8,14 +8,14 @@
     {
       "naziv": "Južne vesti",
       "tip": "rss",
-      "url": "https://juznevesti.com"
+      "url": "https://juznevesti.com/feed/"
     }
   ],
   "Tehnologija": [
     {
       "naziv": "Benchmark",
       "tip": "rss",
-      "url": "https://benchmark.rs"
+      "url": "https://benchmark.rs/feed/"
     },
     {
       "naziv": "Bug.hr",
