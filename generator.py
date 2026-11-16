@@ -18,11 +18,11 @@ def uzmi_rss(url, izvor_naziv):
         for entry in feed.entries[:8]:
             slika = PODRAZUMEVANA_SLIKA
             if "media_content" in entry and len(entry.media_content) > 0:
-                slika = entry.media_content.get("url", slika)
+                slika = entry.media_content[0].get("url", slika)
             elif "media_thumbnail" in entry and len(entry.media_thumbnail) > 0:
-                slika = entry.media_thumbnail.get("url", slika)
+                slika = entry.media_thumbnail[0].get("url", slika)
             elif "enclosures" in entry and len(entry.enclosures) > 0:
-                slika = entry.enclosures.get("href", slika)
+                slika = entry.enclosures[0].get("href", slika)
             elif "summary" in entry:
                 soup = BeautifulSoup(entry.summary, "html.parser")
                 img = soup.find("img")
