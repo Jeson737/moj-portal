@@ -1,49 +1,73 @@
 import json
 import html
-import requests
 import feedparser
+from curl_cffi import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib.parse import urljoin
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
-PODRAZUMEVANA_SLIKA = "https://placeholder.com"
+PODRAZUMEVANA_SLIKA = "https://placehold.co"
+
+def prvi_element(lista):
+    return next(iter(lista), {})
+
+def uzmi_og_sliku(link):
+    try:
+        r = requests.get(link, impersonate="chrome", timeout=10)
+        if r.status_code == 200:
+            soup = BeautifulSoup(r.text, "html.parser")
+            og = soup.find("meta", property="og:image")
+            if og and og.get("content"):
+                return og["content"]
+    except Exception:
+        pass
+    return PODRAZUMEVANA_SLIKA
 
 def uzmi_rss(url, izvor_naziv):
     stavke = []
     try:
-        r = requests.get(url, headers=HEADERS, timeout=15)
+        r = requests.get(url, impersonate="chrome", timeout=20)
+        print(f"[{izvor_naziv}] Status: {r.status_code}")
         feed = feedparser.parse(r.content)
-        print(f"{izvor_naziv}: pronadjeno {len(feed.entries)} vesti")
-        for entry in feed.entries[:8]:
+        print(f"[{izvor_naziv}] Pronadjeno vesti: {len(feed.entries)}")
+        for entry in feed.entries[:6]:
             slika = PODRAZUMEVANA_SLIKA
-            if "media_content" in entry and len(entry.media_content) > 0:
-                slika = entry.media_content[0].get("url", slika)
-            elif "media_thumbnail" in entry and len(entry.media_thumbnail) > 0:
-                slika = entry.media_thumbnail[0].get("url", slika)
-            elif "enclosures" in entry and len(entry.enclosures) > 0:
-                slika = entry.enclosures[0].get("href", slika)
+            mc = prvi_element(entry.get("media_content", ()))
+            mt = prvi_element(entry.get("media_thumbnail", ()))
+            enc = prvi_element(entry.get("enclosures", ()))
+
+            if mc.get("url"):
+                slika = mc.get("url")
+            elif mt.get("url"):
+                slika = mt.get("url")
+            elif enc.get("href"):
+                slika = enc.get("href")
             elif "summary" in entry:
                 soup = BeautifulSoup(entry.summary, "html.parser")
                 img = soup.find("img")
                 if img and img.get("src"):
                     slika = img["src"]
+
+            link = entry.get("link", "#")
+            if slika == PODRAZUMEVANA_SLIKA and link != "#":
+                slika = uzmi_og_sliku(link)
+
             stavke.append({
                 "naslov": entry.get("title", "Bez naslova"),
-                "link": entry.get("link", "#"),
+                "link": link,
                 "slika": slika,
                 "izvor": izvor_naziv
             })
     except Exception as e:
-        print(f"Greska za {izvor_naziv}: {e}")
+        print(f"[{izvor_naziv}] GRESKA: {e}")
     return stavke
 
 def uzmi_html(cfg):
     stavke = []
     try:
-        r = requests.get(cfg["url"], headers=HEADERS, timeout=15)
+        r = requests.get(cfg["url"], impersonate="chrome", timeout=20)
         soup = BeautifulSoup(r.text, "html.parser")
-        kartice = soup.select(cfg["kartica_selektor"])[:8]
+        kartice = soup.select(cfg["kartica_selektor"])[:6]
         for k in kartice:
             a_tag = k.select_one(cfg["naslov_selektor"])
             if not a_tag:
@@ -63,7 +87,7 @@ def uzmi_html(cfg):
                 "izvor": cfg["naziv"]
             })
     except Exception as e:
-        print(f"Greska za {cfg['naziv']}: {e}")
+        print(f"[{cfg['naziv']}] GRESKA: {e}")
     return stavke
 
 def generisi():
