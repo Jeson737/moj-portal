@@ -2,13 +2,16 @@
   "Vesti": [
     {
       "naziv": "021.rs",
-      "tip": "rss",
-      "url": "https://www.021.rs/rss/sve-vesti"
+      "tip": "html",
+      "url": "https://021.rs/najnovije",
+      "kartica_selektor": "article",
+      "naslov_selektor": "h2 a, h3 a",
+      "slika_selektor": "img"
     },
     {
       "naziv": "Južne vesti",
       "tip": "rss",
-      "url": "https://juznevesti.com/feed/"
+      "url": "https://www.juznevesti.com/feed/"
     }
   ],
   "Tehnologija": [
