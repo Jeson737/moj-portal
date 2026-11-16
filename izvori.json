@@ -1,5 +1,6 @@
  {
   "Vesti": [
+    {
       "naziv": "021.rs",
       "tip": "html",
       "url": "https://www.021.rs/najnovije/3",
@@ -26,3 +27,4 @@
     }
   ]
 }
+ 
