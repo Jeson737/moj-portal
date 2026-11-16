@@ -1,0 +1,19 @@
+{
+  "Tehnologija": [
+    {
+      "naziv": "Hacker News",
+      "tip": "rss",
+      "url": "https://hnrss.org"
+    }
+  ],
+  "Vesti i Oglasi": [
+    {
+      "naziv": "Primer sajta bez RSS-a",
+      "tip": "html",
+      "url": "https://primer-sajta.rs",
+      "kartica_selektor": "article.vest",
+      "naslov_selektor": "h2 a",
+      "slika_selektor": "img"
+    }
+  ]
+}
