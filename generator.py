@@ -42,11 +42,11 @@ def uzmi_og_sliku_browser(page, link):
         og = page.locator("meta[property='og:image']").first
         if og.count() > 0:
             content = og.get_attribute("content")
-            if content:
+            if content and "logo" not in content.lower():
                 return urljoin(link, content)
     except Exception:
         pass
-    return PODRAZUMEVANA_SLIKA
+    return None
 
 def parsiraj_rss_sadrzaj(xml_tekst, izvor_naziv, page):
     stavke = []
@@ -71,7 +71,7 @@ def parsiraj_rss_sadrzaj(xml_tekst, izvor_naziv, page):
 
         link = entry.get("link", "#")
         if slika == PODRAZUMEVANA_SLIKA and link != "#":
-            slika = uzmi_og_sliku_browser(page, link)
+            slika = uzmi_og_sliku_browser(page, link) or PODRAZUMEVANA_SLIKA
 
         stavke.append({
             "naslov": entry.get("title", "Bez naslova"),
@@ -86,16 +86,21 @@ def obradi_sajt(page, naziv, url):
         url = "https://" + url
     print(f"--- Obradjujem: {naziv} ({url}) ---")
     try:
+        try:
+            resp = page.request.get(url, timeout=10000)
+            tekst_resp = resp.text()
+            if "<rss" in tekst_resp[:600].lower() or "<feed" in tekst_resp[:600].lower():
+                stavke = parsiraj_rss_sadrzaj(tekst_resp, naziv, page)
+                if stavke:
+                    print(f"[{naziv}] Ucitano direktno iz RSS-a: {len(stavke)}")
+                    return stavke
+        except Exception:
+            pass
+
         page.goto(url, wait_until="domcontentloaded", timeout=25000)
         page.wait_for_timeout(2500)
         sadrzaj = page.content()
         soup = BeautifulSoup(sadrzaj, "html.parser")
-
-        if "<rss" in sadrzaj[:500].lower() or "<feed" in sadrzaj[:500].lower():
-            stavke = parsiraj_rss_sadrzaj(sadrzaj, naziv, page)
-            if stavke:
-                print(f"[{naziv}] Ucitano direktno iz RSS-a: {len(stavke)}")
-                return stavke
 
         rss_tag = soup.find("link", type=re.compile(r"rss|atom", re.I))
         if rss_tag and rss_tag.get("href"):
@@ -121,23 +126,28 @@ def obradi_sajt(page, naziv, url):
             if je_clanak_link(url, href, tekst):
                 vidjeni.add(puni_link)
                 kandidati.append((tekst, puni_link))
-            if len(kandidati) >= 6:
+            if len(kandidati) >= 12:
                 break
 
         stavke = []
         for naslov, link in kandidati:
             slika = uzmi_og_sliku_browser(page, link)
+            if not slika:
+                continue
             stavke.append({
                 "naslov": naslov,
                 "link": link,
                 "slika": slika,
                 "izvor": naziv
             })
+            if len(stavke) >= 6:
+                break
         print(f"[{naziv}] Ucitano univerzalno preko pregledača: {len(stavke)}")
         return stavke
     except Exception as e:
         print(f"[{naziv}] Greska: {e}")
         return []
+
 
 def izmesaj_liste(liste_po_izvorima):
     izmesano = []
