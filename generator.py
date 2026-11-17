@@ -98,7 +98,9 @@ def obradi_sajt(page, naziv, url):
             pass
 
         page.goto(url, wait_until="domcontentloaded", timeout=25000)
-        page.wait_for_timeout(2500)
+        page.wait_for_timeout(2000)
+        page.mouse.wheel(0, 1500)
+        page.wait_for_timeout(1500)
         sadrzaj = page.content()
         soup = BeautifulSoup(sadrzaj, "html.parser")
 
@@ -126,27 +128,24 @@ def obradi_sajt(page, naziv, url):
             if je_clanak_link(url, href, tekst):
                 vidjeni.add(puni_link)
                 kandidati.append((tekst, puni_link))
-            if len(kandidati) >= 12:
+            if len(kandidati) >= 6:
                 break
 
         stavke = []
         for naslov, link in kandidati:
-            slika = uzmi_og_sliku_browser(page, link)
-            if not slika:
-                continue
+            slika = uzmi_og_sliku_browser(page, link) or PODRAZUMEVANA_SLIKA
             stavke.append({
                 "naslov": naslov,
                 "link": link,
                 "slika": slika,
                 "izvor": naziv
             })
-            if len(stavke) >= 6:
-                break
         print(f"[{naziv}] Ucitano univerzalno preko pregledača: {len(stavke)}")
         return stavke
     except Exception as e:
         print(f"[{naziv}] Greska: {e}")
         return []
+
 
 
 def izmesaj_liste(liste_po_izvorima):
