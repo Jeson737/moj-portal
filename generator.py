@@ -237,7 +237,7 @@ def generisi():
         .tabs {{ max-width: 1200px; margin: 0 auto 18px; display: flex; gap: 8px; flex-wrap: wrap; }}
         .tab {{ background-color: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 13px; border-radius: 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; }}
         .tab.active, .tab:hover {{ background-color: #b45309; color: #ffffff; border-color: #b45309; }}
-        .grid {{ max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }}
+        .grid {{ max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }}
         .card {{ background-color: #fffdf8 !important; border-radius: 10px; overflow: hidden; text-decoration: none; color: #1c1917 !important; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }}
         .card:hover {{ transform: translateY(-3px); border-color: #b45309; }}
         .card img {{ width: 100%; height: 85px; object-fit: cover; background-color: #ede7db; display: block; }}
