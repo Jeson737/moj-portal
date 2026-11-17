@@ -128,7 +128,7 @@ def obradi_sajt(page, naziv, url):
             if je_clanak_link(url, href, tekst):
                 vidjeni.add(puni_link)
                 kandidati.append((tekst, puni_link))
-            if len(kandidati) >= 6:
+            if len(kandidati) >= 12:
                 break
 
         stavke = []
