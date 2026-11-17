@@ -12,7 +12,7 @@ PODRAZUMEVANA_SLIKA = "https://placehold.co"
 ZABRANJENE_RECI = (
     "kontakt", "o-nama", "impressum", "marketing", "oglasi-za-posao",
     "prijava", "registracija", "politika-privatnosti", "uslovi-koriscenja",
-    "login", "register", "tag/", "category/", "autor/", "kategorija/"
+    "login", "register", "tag/", "category/", "autor/", "kategorija/, "oglasi/"
 )
 
 def prvi_element(lista):
@@ -221,7 +221,7 @@ def generisi():
             </div>
         </a>""")
 
-        html_stranica = f"""<!DOCTYPE html>
+    html_stranica = f"""<!DOCTYPE html>
 <html lang="sr">
 <head>
     <meta charset="UTF-8">
@@ -230,20 +230,23 @@ def generisi():
     <title>Moj Portal</title>
     <style>
         * {{ box-sizing: border-box; }}
-        body {{ font-family: system-ui, -apple-system, sans-serif; background-color: #f7f4eb !important; color: #1c1917 !important; margin: 0; padding: 16px; }}
-        header {{ max-width: 1200px; margin: 0 auto 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }}
+        body {{ font-family: system-ui, -apple-system, sans-serif; background-color: #f7f4eb !important; color: #1c1917 !important; margin: 0; padding: 12px; }}
+        header {{ max-width: 1200px; margin: 0 auto 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }}
         header h1 {{ font-size: 20px; margin: 0; color: #292524; }}
-        .search-box {{ width: 100%; max-width: 280px; padding: 7px 14px; border-radius: 20px; border: 1px solid #d6d0c4; background-color: #ffffff; color: #1c1917; font-size: 13px; outline: none; }}
-        .search-box:focus {{ border-color: #b45309; }}
-        .tabs {{ max-width: 1200px; margin: 0 auto 18px; display: flex; gap: 8px; flex-wrap: wrap; }}
-        .tab {{ background-color: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 13px; border-radius: 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; }}
+        .search-wrap {{ display: flex; gap: 6px; flex: 1; max-width: 460px; min-width: 260px; }}
+        .search-box {{ flex: 1; min-width: 120px; padding: 7px 14px; border-radius: 20px; border: 1px solid #d6d0c4; background-color: #ffffff; color: #1c1917; font-size: 13px; outline: none; }}
+        .btn-action {{ background-color: #b45309; color: #ffffff; border: none; padding: 7px 13px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; white-space: nowrap; }}
+        .btn-save {{ background-color: #ede7db; color: #44403c; border: 1px solid #d6d0c4; }}
+        .tabs {{ max-width: 1200px; margin: 0 auto 16px; display: flex; gap: 8px; flex-wrap: wrap; }}
+        .tab {{ background-color: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 12px; border-radius: 16px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }}
         .tab.active, .tab:hover {{ background-color: #b45309; color: #ffffff; border-color: #b45309; }}
+        .tab .del-x {{ font-weight: bold; opacity: 0.75; padding: 0 2px; }}
+        .status-msg {{ max-width: 1200px; margin: 0 auto 12px; font-size: 12px; color: #78716c; display: none; }}
         .grid {{ max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }}
-        .card {{ background-color: #fffdf8 !important; border-radius: 10px; overflow: hidden; text-decoration: none; color: #1c1917 !important; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }}
-        .card:hover {{ transform: translateY(-3px); border-color: #b45309; }}
+        .card {{ background-color: #fffdf8 !important; border-radius: 10px; overflow: hidden; text-decoration: none; color: #1c1917 !important; display: flex; flex-direction: column; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }}
         .card img {{ width: 100%; height: 85px; object-fit: cover; background-color: #ede7db; display: block; }}
         .card-body {{ padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 5px; background-color: #fffdf8; }}
-        .badge {{ font-size: 10px; color: #b45309; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }}
+        .badge {{ font-size: 10px; color: #b45309; font-weight: 700; text-transform: uppercase; }}
         .card h3 {{ margin: 0; font-size: 12px; line-height: 1.35; font-weight: 600; color: #1c1917 !important; }}
         footer {{ max-width: 1200px; margin: 24px auto 0; text-align: center; color: #78716c; font-size: 11px; }}
     </style>
@@ -251,30 +254,151 @@ def generisi():
 <body>
     <header>
         <h1>Moj Portal</h1>
-        <input type="text" id="pretraga" class="search-box" placeholder="Pretraži vesti..." oninput="osveziPrikaz()">
+        <div class="search-wrap">
+            <input type="text" id="pretraga" class="search-box" placeholder="Pretraži ili upiši novu temu..." oninput="osveziPrikaz()" onkeydown="if(event.key==='Enter') pretraziUzivo()">
+            <button class="btn-action" onclick="pretraziUzivo()">Traži temu</button>
+            <button id="btnSacuvaj" class="btn-action btn-save" style="display:none;" onclick="sacuvajTrenutnuTemu()">+ Sačuvaj</button>
+        </div>
     </header>
-    <div class="tabs">{''.join(dugmici)}</div>
-    <div class="grid">{''.join(kartice_html)}</div>
+    <div class="tabs" id="tabsBar">{''.join(dugmici)}</div>
+    <div id="statusPoruka" class="status-msg"></div>
+    <div class="grid" id="vestiGrid">{''.join(kartice_html)}</div>
     <footer>Ažurirano: {vreme} (UTC)</footer>
     <script>
         let aktivnaKat = 'sve';
+        let poslednjaLiveTema = '';
+        const REZERVNA_SLIKA = "{PODRAZUMEVANA_SLIKA}";
 
         function postaviKategoriju(kat, btn) {{
             aktivnaKat = kat;
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) btn.classList.add('active');
+            document.getElementById('statusPoruka').style.display = 'none';
             osveziPrikaz();
         }}
 
         function osveziPrikaz() {{
             const pojam = document.getElementById('pretraga').value.toLowerCase().trim();
             document.querySelectorAll('.card').forEach(c => {{
-                const poklapaKat = (aktivnaKat === 'sve' || c.dataset.kat === aktivnaKat);
+                const poklapaKat = (aktivnaKat === 'sve' && !c.dataset.live) || (c.dataset.kat === aktivnaKat);
                 const tekstKartice = c.innerText.toLowerCase();
-                const poklapaTekst = (!pojam || tekstKartice.includes(pojam));
+                const poklapaTekst = (!pojam || tekstKartice.includes(pojam) || c.dataset.live === '1');
                 c.style.display = (poklapaKat && poklapaTekst) ? 'flex' : 'none';
             }});
         }}
+
+        async function pretraziUzivo(zadatiPojam, dugmeTab) {{
+            const inputEl = document.getElementById('pretraga');
+            const pojam = (zadatiPojam || inputEl.value).trim();
+            if (!pojam) return;
+
+            if (zadatiPojam) inputEl.value = pojam;
+            poslednjaLiveTema = pojam;
+            aktivnaKat = 'live:' + pojam.toLowerCase();
+
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (dugmeTab) dugmeTab.classList.add('active');
+
+            const statusEl = document.getElementById('statusPoruka');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Pretražujem sveže vesti za: "' + pojam + '"...';
+
+            const sacuvane = ucitajSacuvaneTeme();
+            const vecSacuvana = sacuvane.some(t => t.toLowerCase() === pojam.toLowerCase());
+            document.getElementById('btnSacuvaj').style.display = vecSacuvana ? 'none' : 'inline-block';
+
+            document.querySelectorAll('.card[data-live="1"]').forEach(el => el.remove());
+            osveziPrikaz();
+
+            try {{
+                const q = encodeURIComponent(pojam + ' when:7d');
+                const rssUrl = 'https://news.' + 'google.' + 'com/rss/search?q=' + q + '&hl=sr&gl=RS&ceid=RS:sr';
+                const apiUrl = 'https://rss2json.com' + encodeURIComponent(rssUrl);
+                const resp = await fetch(apiUrl);
+                const data = await resp.json();
+
+                if (!data.items || data.items.length === 0) {{
+                    statusEl.textContent = 'Nema pronađenih vesti za temu "' + pojam + '".';
+                    return;
+                }}
+
+                const grid = document.getElementById('vestiGrid');
+                data.items.slice(0, 12).forEach(item => {{
+                    const a = document.createElement('a');
+                    a.href = item.link;
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                    a.className = 'card';
+                    a.dataset.kat = aktivnaKat;
+                    a.dataset.live = '1';
+
+                    const deloviNaslova = item.title.split(' - ');
+                    const izvor = deloviNaslova.length > 1 ? deloviNaslova.pop() : 'Vesti';
+                    const cistNaslov = deloviNaslova.join(' - ');
+
+                    a.innerHTML = `
+                        <img src="${{REZERVNA_SLIKA}}" alt="" loading="lazy">
+                        <div class="card-body">
+                            <span class="badge">${{escapeHtml(pojam)}} • ${{escapeHtml(izvor)}}</span>
+                            <h3>${{escapeHtml(cistNaslov)}}</h3>
+                        </div>`;
+                    grid.prepend(a);
+                }});
+                statusEl.textContent = 'Prikazano ' + Math.min(data.items.length, 12) + ' vesti za temu "' + pojam + '".';
+            }} catch (e) {{
+                statusEl.textContent = 'Greška pri učitavanju teme. Pokušaj ponovo.';
+            }}
+        }}
+
+        function ucitajSacuvaneTeme() {{
+            try {{
+                return JSON.parse(localStorage.getItem('moj_portal_teme') || '[]');
+            }} catch (e) {{
+                return [];
+            }}
+        }}
+
+        function sacuvajTrenutnuTemu() {{
+            if (!poslednjaLiveTema) return;
+            const teme = ucitajSacuvaneTeme();
+            if (!teme.some(t => t.toLowerCase() === poslednjaLiveTema.toLowerCase())) {{
+                teme.push(poslednjaLiveTema);
+                localStorage.setItem('moj_portal_teme', JSON.stringify(teme));
+                renderujSacuvaneTabove();
+            }}
+            document.getElementById('btnSacuvaj').style.display = 'none';
+        }}
+
+        function obrisiSacuvanuTemu(e, tema) {{
+            e.stopPropagation();
+            const teme = ucitajSacuvaneTeme().filter(t => t !== tema);
+            localStorage.setItem('moj_portal_teme', JSON.stringify(teme));
+            renderujSacuvaneTabove();
+            if (aktivnaKat === 'live:' + tema.toLowerCase()) {{
+                postaviKategoriju('sve', document.querySelector('.tab'));
+            }}
+        }}
+
+        function renderujSacuvaneTabove() {{
+            document.querySelectorAll('.tab[data-saved="1"]').forEach(el => el.remove());
+            const bar = document.getElementById('tabsBar');
+            ucitajSacuvaneTeme().forEach(tema => {{
+                const btn = document.createElement('button');
+                btn.className = 'tab';
+                btn.dataset.saved = '1';
+                if (aktivnaKat === 'live:' + tema.toLowerCase()) btn.classList.add('active');
+                btn.innerHTML = `<span>${{escapeHtml(tema)}}</span><span class="del-x" title="Ukloni temu">×</span>`;
+                btn.onclick = () => pretraziUzivo(tema, btn);
+                btn.querySelector('.del-x').onclick = (e) => obrisiSacuvanuTemu(e, tema);
+                bar.appendChild(btn);
+            }});
+        }}
+
+        function escapeHtml(str) {{
+            return String(str).replace(/[&<>"']/g, m => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[m]));
+        }}
+
+        renderujSacuvaneTabove();
     </script>
 </body>
 </html>"""
