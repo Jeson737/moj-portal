@@ -1,12 +1,22 @@
 {
+  "Teme": [
+    {
+      "naziv": "Novi Sad",
+      "url": "https://news.google.com/rss/search?q=Novi+Sad+when:2d&hl=sr&gl=RS&ceid=RS:sr"
+    },
+    {
+      "naziv": "Subvencije",
+      "url": "https://news.google.com/rss/search?q=subvencije+Srbija+when:3d&hl=sr&gl=RS&ceid=RS:sr"
+    }
+  ],
   "Vesti": [
     {
       "naziv": "021.rs",
-      "url": "https://021.rs/najnovije/3"
+      "url": "https://www.021.rs/najnovije/3"
     },
     {
       "naziv": "Južne vesti",
-      "url": "https://juznevesti.com/feed/"
+      "url": "https://www.juznevesti.com/feed/"
     }
   ],
   "Tehnologija": [
@@ -16,13 +26,13 @@
     },
     {
       "naziv": "Bug.hr",
-      "url": "https://bug.hr"
+      "url": "https://www.bug.hr"
     }
   ],
   "Privreda": [
     {
       "naziv": "eKapija",
-      "url": "https://ekapija.com"
+      "url": "https://www.ekapija.com"
     }
   ]
 }
