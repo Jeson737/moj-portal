@@ -86,24 +86,35 @@ def obradi_sajt(page, naziv, url):
         url = "https://" + url
     print(f"--- Obradjujem: {naziv} ({url}) ---")
     try:
+        # 1. Direktna provera RSS-a (za sam link, /feed/ i /rss)
+        for test_url in (url, url.rstrip("/") + "/feed/", url.rstrip("/") + "/rss"):
+            try:
+                resp = page.request.get(test_url, timeout=8000)
+                tekst_resp = resp.text()
+                if "<rss" in tekst_resp[:800].lower() or "<feed" in tekst_resp[:800].lower():
+                    stavke = parsiraj_rss_sadrzaj(tekst_resp, naziv, page)
+                    if stavke:
+                        print(f"[{naziv}] Ucitano iz RSS-a ({test_url}): {len(stavke)}")
+                        return stavke
+            except Exception:
+                pass
+
+        # 2. Otvaranje stranice u Chromium pregledaču
+        page.goto(url, wait_until="domcontentloaded", timeout=25000)
         try:
-            resp = page.request.get(url, timeout=10000)
-            tekst_resp = resp.text()
-            if "<rss" in tekst_resp[:600].lower() or "<feed" in tekst_resp[:600].lower():
-                stavke = parsiraj_rss_sadrzaj(tekst_resp, naziv, page)
-                if stavke:
-                    print(f"[{naziv}] Ucitano direktno iz RSS-a: {len(stavke)}")
-                    return stavke
+            dugme = page.locator("button:has-text('Prihvatam'), button:has-text('Slažem se'), button:has-text('Accept'), a:has-text('Prihvatam')").first
+            if dugme.is_visible(timeout=2000):
+                dugme.click()
         except Exception:
             pass
 
-        page.goto(url, wait_until="domcontentloaded", timeout=25000)
         page.wait_for_timeout(2000)
         page.mouse.wheel(0, 1500)
         page.wait_for_timeout(1500)
         sadrzaj = page.content()
         soup = BeautifulSoup(sadrzaj, "html.parser")
 
+        # 3. Provera skrivenog RSS linka u <head>
         rss_tag = soup.find("link", type=re.compile(r"rss|atom", re.I))
         if rss_tag and rss_tag.get("href"):
             rss_url = urljoin(url, rss_tag["href"])
@@ -117,6 +128,7 @@ def obradi_sajt(page, naziv, url):
             except Exception:
                 pass
 
+        # 4. Univerzalno izvlacenje clanaka sa stranice
         vidjeni = set()
         kandidati = []
         for a in soup.find_all("a", href=True):
@@ -144,13 +156,11 @@ def obradi_sajt(page, naziv, url):
             })
             if len(stavke) >= 6:
                 break
-                
         print(f"[{naziv}] Ucitano univerzalno preko pregledača: {len(stavke)}")
         return stavke
     except Exception as e:
         print(f"[{naziv}] Greska: {e}")
         return []
-
 
 
 def izmesaj_liste(liste_po_izvorima):
