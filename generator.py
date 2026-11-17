@@ -12,7 +12,7 @@ PODRAZUMEVANA_SLIKA = "https://placehold.co"
 ZABRANJENE_RECI = (
     "kontakt", "o-nama", "impressum", "marketing", "oglasi-za-posao",
     "prijava", "registracija", "politika-privatnosti", "uslovi-koriscenja",
-    "login", "register", "tag/", "category/", "autor/", "kategorija"/, "oglasi/"
+    "login", "register", "tag/", "category/", "autor/", "kategorija/", "/oglasi/"
 )
 
 def prvi_element(lista):
