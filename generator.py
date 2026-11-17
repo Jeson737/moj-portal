@@ -214,6 +214,24 @@ def generisi():
     <meta name="referrer" content="no-referrer">
     <title>Moj Portal</title>
     <style>
+        body {{ font-family: system-ui, -apple-system, sans-serif; background: #f7f4eb; color: #1c1917; margin: 0; padding: 16px; }}
+        header {{ max-width: 1200px; margin: 0 auto 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }}
+        header h1 {{ font-size: 20px; margin: 0; color: #292524; }}
+        .search-box {{ width: 100%; max-width: 280px; padding: 7px 14px; border-radius: 20px; border: 1px solid #d6d0c4; background: #fffdf8; color: #1c1917; font-size: 13px; outline: none; }}
+        .search-box:focus {{ border-color: #b45309; }}
+        .tabs {{ max-width: 1200px; margin: 0 auto 18px; display: flex; gap: 8px; flex-wrap: wrap; }}
+        .tab {{ background: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 13px; border-radius: 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; }}
+        .tab.active, .tab:hover {{ background: #b45309; color: #ffffff; border-color: #b45309; }}
+        .grid {{ max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }}
+        .card {{ background: #fffdf8; border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }}
+        .card:hover {{ transform: translateY(-3px); border-color: #b45309; }}
+        .card img {{ width: 100%; height: 85px; object-fit: cover; background: #ede7db; }}
+        .card-body {{ padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 5px; }}
+        .badge {{ font-size: 10px; color: #b45309; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }}
+        .card h3 {{ margin: 0; font-size: 12px; line-height: 1.35; font-weight: 600; color: #1c1917; }}
+        footer {{ max-width: 1200px; margin: 24px auto 0; text-align: center; color: #78716c; font-size: 11px; }}
+    </style>
+    <style>
         body {{ font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }}
         header {{ max-width: 1200px; margin: 0 auto 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }}
         .search-box {{ width: 100%; max-width: 320px; padding: 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #f8fafc; font-size: 14px; outline: none; }}
