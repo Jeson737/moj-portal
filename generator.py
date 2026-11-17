@@ -86,16 +86,17 @@ def obradi_sajt(page, naziv, url):
         url = "https://" + url
     print(f"--- Obradjujem: {naziv} ({url}) ---")
     try:
-        # 1. Direktna provera RSS-a (za sam link, /feed/ i /rss)
+        # 1. Direktna provera RSS-a kroz pravi Chromium pregledač
         for test_url in (url, url.rstrip("/") + "/feed/", url.rstrip("/") + "/rss"):
             try:
-                resp = page.request.get(test_url, timeout=8000)
-                tekst_resp = resp.text()
-                if "<rss" in tekst_resp[:800].lower() or "<feed" in tekst_resp[:800].lower():
-                    stavke = parsiraj_rss_sadrzaj(tekst_resp, naziv, page)
-                    if stavke:
-                        print(f"[{naziv}] Ucitano iz RSS-a ({test_url}): {len(stavke)}")
-                        return stavke
+                resp = page.goto(test_url, wait_until="domcontentloaded", timeout=12000)
+                if resp and resp.ok:
+                    sadrzaj_feed = page.evaluate("() => document.body.innerText")
+                    if "<rss" in sadrzaj_feed[:800].lower() or "<feed" in sadrzaj_feed[:800].lower():
+                        stavke = parsiraj_rss_sadrzaj(sadrzaj_feed, naziv, page)
+                        if stavke:
+                            print(f"[{naziv}] Ucitano iz RSS-a ({test_url}): {len(stavke)}")
+                            return stavke
             except Exception:
                 pass
 
