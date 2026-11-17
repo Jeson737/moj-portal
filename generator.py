@@ -301,7 +301,7 @@ def generisi():
 
             const statusEl = document.getElementById('statusPoruka');
             statusEl.style.display = 'block';
-            statusEl.textContent = 'Pretražujem sveže vesti za: "' + pojam + '"...';
+            statusEl.textContent = 'Tražim nove vesti sa interneta za: "' + pojam + '"...';
 
             const sacuvane = ucitajSacuvaneTeme();
             const vecSacuvana = sacuvane.some(t => t.toLowerCase() === pojam.toLowerCase());
@@ -313,26 +313,33 @@ def generisi():
             try {{
                 const q = encodeURIComponent(pojam + ' when:7d');
                 const rssUrl = 'https://news.' + 'google.' + 'com/rss/search?q=' + q + '&hl=sr&gl=RS&ceid=RS:sr';
-                const apiUrl = 'https://rss2json.com' + encodeURIComponent(rssUrl);
-                const resp = await fetch(apiUrl);
-                const data = await resp.json();
+                const proxyUrl = 'https://api.' + 'allorigins.' + 'win/get?url=' + encodeURIComponent(rssUrl); 
+                const resp = await fetch(proxyUrl);
+                const json = await resp.json();
 
-                if (!data.items || data.items.length === 0) {{
-                    statusEl.textContent = 'Nema pronađenih vesti za temu "' + pojam + '".';
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(json.contents, 'text/xml');
+                const items = Array.from(xmlDoc.querySelectorAll('item'));
+
+                if (!items.length) {{
+                    statusEl.textContent = 'Nema pronađenih novih vesti na internetu za "' + pojam + '".';
                     return;
                 }}
 
                 const grid = document.getElementById('vestiGrid');
-                data.items.slice(0, 12).forEach(item => {{
+                items.slice(0, 12).forEach(item => {{
+                    const punNaslov = item.querySelector('title')?.textContent || 'Bez naslova';
+                    const link = item.querySelector('link')?.textContent || '#';
+
                     const a = document.createElement('a');
-                    a.href = item.link;
+                    a.href = link;
                     a.target = '_blank';
                     a.rel = 'noopener';
                     a.className = 'card';
                     a.dataset.kat = aktivnaKat;
                     a.dataset.live = '1';
 
-                    const deloviNaslova = item.title.split(' - ');
+                    const deloviNaslova = punNaslov.split(' - ');
                     const izvor = deloviNaslova.length > 1 ? deloviNaslova.pop() : 'Vesti';
                     const cistNaslov = deloviNaslova.join(' - ');
 
@@ -344,9 +351,9 @@ def generisi():
                         </div>`;
                     grid.prepend(a);
                 }});
-                statusEl.textContent = 'Prikazano ' + Math.min(data.items.length, 12) + ' vesti za temu "' + pojam + '".';
+                statusEl.textContent = 'Pronađeno ' + Math.min(items.length, 12) + ' novih vesti sa interneta za "' + pojam + '".';
             }} catch (e) {{
-                statusEl.textContent = 'Greška pri učitavanju teme. Pokušaj ponovo.';
+                statusEl.textContent = 'Greška pri pretrazi interneta. Pokušaj ponovo za par sekundi.';
             }}
         }}
 
