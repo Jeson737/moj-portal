@@ -133,13 +133,18 @@ def obradi_sajt(page, naziv, url):
 
         stavke = []
         for naslov, link in kandidati:
-            slika = uzmi_og_sliku_browser(page, link) or PODRAZUMEVANA_SLIKA
+            slika = uzmi_og_sliku_browser(page, link)
+            if not slika:
+                continue
             stavke.append({
                 "naslov": naslov,
                 "link": link,
                 "slika": slika,
                 "izvor": naziv
             })
+            if len(stavke) >= 6:
+                break
+                
         print(f"[{naziv}] Ucitano univerzalno preko pregledača: {len(stavke)}")
         return stavke
     except Exception as e:
