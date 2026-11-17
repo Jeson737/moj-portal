@@ -6,39 +6,23 @@
     <meta name="referrer" content="no-referrer">
     <title>Moj Portal</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background: #f7f4eb; color: #1c1917; margin: 0; padding: 16px; }
+        * { box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #f7f4eb !important; color: #1c1917 !important; margin: 0; padding: 16px; }
         header { max-width: 1200px; margin: 0 auto 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         header h1 { font-size: 20px; margin: 0; color: #292524; }
-        .search-box { width: 100%; max-width: 280px; padding: 7px 14px; border-radius: 20px; border: 1px solid #d6d0c4; background: #fffdf8; color: #1c1917; font-size: 13px; outline: none; }
+        .search-box { width: 100%; max-width: 280px; padding: 7px 14px; border-radius: 20px; border: 1px solid #d6d0c4; background-color: #ffffff; color: #1c1917; font-size: 13px; outline: none; }
         .search-box:focus { border-color: #b45309; }
         .tabs { max-width: 1200px; margin: 0 auto 18px; display: flex; gap: 8px; flex-wrap: wrap; }
-        .tab { background: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 13px; border-radius: 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
-        .tab.active, .tab:hover { background: #b45309; color: #ffffff; border-color: #b45309; }
+        .tab { background-color: #ede7db; color: #44403c; border: 1px solid #d6d0c4; padding: 6px 13px; border-radius: 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+        .tab.active, .tab:hover { background-color: #b45309; color: #ffffff; border-color: #b45309; }
         .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
-        .card { background: #fffdf8; border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .card { background-color: #fffdf8 !important; border-radius: 10px; overflow: hidden; text-decoration: none; color: #1c1917 !important; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #e5dec9; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
         .card:hover { transform: translateY(-3px); border-color: #b45309; }
-        .card img { width: 100%; height: 85px; object-fit: cover; background: #ede7db; }
-        .card-body { padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .card img { width: 100%; height: 85px; object-fit: cover; background-color: #ede7db; display: block; }
+        .card-body { padding: 10px; flex: 1; display: flex; flex-direction: column; gap: 5px; background-color: #fffdf8; }
         .badge { font-size: 10px; color: #b45309; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
-        .card h3 { margin: 0; font-size: 12px; line-height: 1.35; font-weight: 600; color: #1c1917; }
+        .card h3 { margin: 0; font-size: 12px; line-height: 1.35; font-weight: 600; color: #1c1917 !important; }
         footer { max-width: 1200px; margin: 24px auto 0; text-align: center; color: #78716c; font-size: 11px; }
-    </style>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }
-        header { max-width: 1200px; margin: 0 auto 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .search-box { width: 100%; max-width: 320px; padding: 10px 15px; border-radius: 20px; border: 1px solid #334155; background: #1e293b; color: #f8fafc; font-size: 14px; outline: none; }
-        .search-box:focus { border-color: #3b82f6; }
-        .tabs { max-width: 1200px; margin: 0 auto 25px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .tab { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
-        .tab.active, .tab:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
-        .grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: #1e293b; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; border: 1px solid #334155; }
-        .card:hover { transform: translateY(-4px); border-color: #3b82f6; }
-        .card img { width: 100%; height: 170px; object-fit: cover; background: #0f172a; }
-        .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
-        .badge { font-size: 12px; color: #38bdf8; font-weight: 600; }
-        .card h3 { margin: 0; font-size: 16px; line-height: 1.4; }
-        footer { max-width: 1200px; margin: 30px auto 0; text-align: center; color: #64748b; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -69,11 +53,11 @@
                 <h3>Dioničari tuže Intel zbog loših rezultata, tvrde kako su bili obmanuti</h3>
             </div>
         </a>
-        <a href="https://www.021.rs/info/srbija/461603/ministarstvo-o-padu-vojnog-aviona-kod-stare-pazove-poginuo-major-goran-bulajic-formirana-komisija" target="_blank" rel="noopener" class="card" data-kat="Vesti">
-            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/Ministarstvo_o_padu_vojnog_aviona_kod_Stare_Pazove_Poginuo_major_Goran_Bulajic_formirana_komisija.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
+        <a href="https://www.021.rs/info/vojvodina/461595/foto-srusio-se-vojni-avion-kod-stare-pazove-poginuo-pilot" target="_blank" rel="noopener" class="card" data-kat="Vesti">
+            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/srusio_se_avion.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
             <div class="card-body">
                 <span class="badge">Vesti • 021.rs</span>
-                <h3>Ministarstvo o padu vojnog aviona kod Stare Pazove: Poginuo major Goran Bulajić, formirana komisija</h3>
+                <h3>FOTO: Srušio se vojni avion kod Stare Pazove, poginuo pilot</h3>
             </div>
         </a>
         <a href="https://benchmark.rs/vesti/uredaji/honor-700-pro-dobija-periskopsku-kameru-i-dodatni-ekran-predstavljanje-zakazano-za-23-novembar/" target="_blank" rel="noopener" class="card" data-kat="Tehnologija">
@@ -90,11 +74,11 @@
                 <h3>Apple pokreće veliko istraživanje kako bi poboljšao AI alate za zdravlje</h3>
             </div>
         </a>
-        <a href="https://www.021.rs/novi-sad/servisne-informacije/461602/deo-ledinackog-puta-u-sredu-bez-struje" target="_blank" rel="noopener" class="card" data-kat="Vesti">
-            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/sijalica_pixabay.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
+        <a href="https://www.021.rs/info/srbija/461603/ministarstvo-o-padu-vojnog-aviona-kod-stare-pazove-poginuo-major-goran-bulajic-formirana-komisija" target="_blank" rel="noopener" class="card" data-kat="Vesti">
+            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/Ministarstvo_o_padu_vojnog_aviona_kod_Stare_Pazove_Poginuo_major_Goran_Bulajic_formirana_komisija.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
             <div class="card-body">
                 <span class="badge">Vesti • 021.rs</span>
-                <h3>Deo Ledinačkog puta u sredu bez struje</h3>
+                <h3>Ministarstvo o padu vojnog aviona kod Stare Pazove: Poginuo major Goran Bulajić, formirana komisija</h3>
             </div>
         </a>
         <a href="https://benchmark.rs/vesti/uredaji/iphone-20-pro-ce-biti-kulminacija-najboljih-osobina-svih-prethodnih-iphone-generacija/" target="_blank" rel="noopener" class="card" data-kat="Tehnologija">
@@ -111,11 +95,11 @@
                 <h3>Google Maps dobiva umjetnu inteligenciju za planiranje putovanja i dogovaranje termina</h3>
             </div>
         </a>
-        <a href="https://www.021.rs/novi-sad/vesti/461601/naredne-nedelje-na-novosadskom-sajmu-prikupljanje-potpisa-za-osnivanje-stranke-branka-ruzica" target="_blank" rel="noopener" class="card" data-kat="Vesti">
-            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/Branko_Ruzic.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
+        <a href="https://www.021.rs/novi-sad/servisne-informacije/461602/deo-ledinackog-puta-u-sredu-bez-struje" target="_blank" rel="noopener" class="card" data-kat="Vesti">
+            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/sijalica_pixabay.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
             <div class="card-body">
                 <span class="badge">Vesti • 021.rs</span>
-                <h3>Naredne nedelje na Novosadskom sajmu prikupljanje potpisa za osnivanje stranke Branka Ružića</h3>
+                <h3>Deo Ledinačkog puta u sredu bez struje</h3>
             </div>
         </a>
         <a href="https://benchmark.rs/vesti/nauka-i-tehnologija/byd-predstavio-solarnu-ev-stanicu-sa-baterijom-i-robotskim-punjenjem/" target="_blank" rel="noopener" class="card" data-kat="Tehnologija">
@@ -132,11 +116,11 @@
                 <h3>Što povezuje Nvidiju, Microsoft i L3Harris, tvrtku koja je prizemljila Ameriku?</h3>
             </div>
         </a>
-        <a href="https://www.021.rs/novi-sad/servisne-informacije/461570/alkotest-u-narodnog-fronta-patrola-na-bulevaru-oslobodjenja-sta-se-desava-u-saobracaju-u-novom-sadu-i-okolini" target="_blank" rel="noopener" class="card" data-kat="Vesti">
-            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/saobracaj_novi_sad.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
+        <a href="https://www.021.rs/novi-sad/vesti/461601/naredne-nedelje-na-novosadskom-sajmu-prikupljanje-potpisa-za-osnivanje-stranke-branka-ruzica" target="_blank" rel="noopener" class="card" data-kat="Vesti">
+            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/Branko_Ruzic.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
             <div class="card-body">
                 <span class="badge">Vesti • 021.rs</span>
-                <h3>Alkotest u Narodnog fronta, patrola na Bulevaru oslobođenja: Šta se dešava u saobraćaju u Novom Sadu i okolini</h3>
+                <h3>Naredne nedelje na Novosadskom sajmu prikupljanje potpisa za osnivanje stranke Branka Ružića</h3>
             </div>
         </a>
         <a href="https://benchmark.rs/vesti/nauka-i-tehnologija/kina-uspesno-testirala-elektricni-avion-19-putnika-i-domet-od-400-kilometara/" target="_blank" rel="noopener" class="card" data-kat="Tehnologija">
@@ -153,11 +137,11 @@
                 <h3>Roborock Black Friday: Saros 20 jeftiniji za 550 €, Qrevo S Pro ispod 400 €. Pogledajte ih u akciji</h3>
             </div>
         </a>
-        <a href="https://www.021.rs/zivot/zdravlje/461360/kako-mozak-uci-da-voli-kafu-cokoladu-masti-i-secer" target="_blank" rel="noopener" class="card" data-kat="Vesti">
-            <img src="https://www.021.rs/images/4a45b142a0bc6322e2cdd01438aa50b4/Kako_mozak_uci_da_voli_kafu_cokoladu_masti_i_secer.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
+        <a href="https://www.021.rs/novi-sad/servisne-informacije/461570/alkotest-u-narodnog-fronta-patrola-na-bulevaru-oslobodjenja-sta-se-desava-u-saobracaju-u-novom-sadu-i-okolini" target="_blank" rel="noopener" class="card" data-kat="Vesti">
+            <img src="https://www.021.rs/images/cf18e89d28ecce77816ea5e8da228253/saobracaj_novi_sad.jpg" alt="" loading="lazy" onerror="this.src='https://placehold.co'">
             <div class="card-body">
                 <span class="badge">Vesti • 021.rs</span>
-                <h3>Kako mozak uči da voli kafu, čokoladu, masti i šećer?</h3>
+                <h3>Alkotest u Narodnog fronta, patrola na Bulevaru oslobođenja: Šta se dešava u saobraćaju u Novom Sadu i okolini</h3>
             </div>
         </a>
         <a href="https://benchmark.rs/vesti/uredaji/samsung-otkriva-kako-izabrati-pravi-televizor-oled-neo-qled-ili-micro-rgb/" target="_blank" rel="noopener" class="card" data-kat="Tehnologija">
@@ -174,7 +158,7 @@
                 <h3>PlainRescue - vodič za pružanje prve pomoći koji će raditi i bez internetske veze</h3>
             </div>
         </a></div>
-    <footer>Ažurirano: 17.11.2026. u 10:09 (UTC)</footer>
+    <footer>Ažurirano: 17.11.2026. u 10:17 (UTC)</footer>
     <script>
         let aktivnaKat = 'sve';
 
@@ -185,7 +169,7 @@
             osveziPrikaz();
         }
 
-                function osveziPrikaz() {
+        function osveziPrikaz() {
             const pojam = document.getElementById('pretraga').value.toLowerCase().trim();
             document.querySelectorAll('.card').forEach(c => {
                 const poklapaKat = (aktivnaKat === 'sve' || c.dataset.kat === aktivnaKat);
